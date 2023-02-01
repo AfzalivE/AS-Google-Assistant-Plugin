@@ -1,5 +1,6 @@
 package com.google.assistant.plugin.common.utils
 
+import actions.UpdateAndroidActionPackageV2Request.XmlContentType
 import com.android.ide.common.rendering.api.ResourceNamespace
 import com.android.ide.common.resources.ResourceItem
 import com.android.ide.common.util.FileSystemRegistry
@@ -25,10 +26,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ThrowableComputable
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
+import com.intellij.psi.PsiManager
+import com.intellij.psi.xml.XmlFile
 import org.jetbrains.android.dom.manifest.*
 import org.jetbrains.android.facet.AndroidFacet
+import org.jetbrains.android.facet.AndroidRootUtil
 import org.jetbrains.android.util.AndroidUtils
-import actions.UpdateAndroidActionPackageV2Request.XmlContentType
 import java.io.IOException
 import java.util.*
 import java.util.function.Predicate
@@ -52,7 +55,7 @@ class ProjectUtils private constructor() {
         val facet = AndroidFacet.getInstance(module)
         if (facet != null) {
             return try {
-                val xmlFile = ManifestUtils.getMainManifest(facet)
+                val xmlFile = getMainManifest(facet)
                 AndroidUtils.loadDomElement(facet.module, xmlFile.virtualFile, Manifest::class.java)
             } catch (e: AssertionError) {
                 null
@@ -61,6 +64,15 @@ class ProjectUtils private constructor() {
             }
         }
         return null
+    }
+
+    // TODO Use ManifestUtils Records
+    fun getMainManifest(facet: AndroidFacet): XmlFile {
+        val manifestFile = AndroidRootUtil.getPrimaryManifestFile(facet)!!
+        val psiFile = PsiManager.getInstance(facet.module.project).findFile(
+            manifestFile
+        )!!
+        return psiFile as XmlFile
     }
 
     private fun getActionResourceUrl(manifest: Manifest): ResourceUrl? {
@@ -278,7 +290,7 @@ class ProjectUtils private constructor() {
         if (facet != null) {
             Intrinsics.checkNotNullExpressionValue(facet, "AndroidFacet.getInstance…rn XmlContentType.ACTIONS")
             try {
-                val xmlFile = ManifestUtils.getMainManifest(facet)
+                val xmlFile = getMainManifest(facet)
                 val manifest = AndroidUtils.loadDomElement(facet.module, xmlFile.virtualFile, Manifest::class.java)
                     ?: return XmlContentType.ACTIONS
                 Intrinsics.checkNotNullExpressionValue(manifest, "AndroidUtils.loadDomElem…rn XmlContentType.ACTIONS")

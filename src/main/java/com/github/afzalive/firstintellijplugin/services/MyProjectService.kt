@@ -3,6 +3,7 @@ package com.github.afzalive.firstintellijplugin.services
 import com.android.tools.idea.editors.manifest.ManifestUtils
 import com.github.afzalive.firstintellijplugin.MyBundle
 import com.github.afzalive.firstintellijplugin.ui.AppActionsToolWindowFactory
+import com.google.assistant.plugin.common.utils.ProjectUtils
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.RegisterToolWindowTask
@@ -21,7 +22,7 @@ class MyProjectService(project: Project) {
             it.name.contains("-app")
         }
         val facet = AndroidFacet.getInstance(appModule)!!
-        val xml = ManifestUtils.getMainManifest(facet)
+        val xml = ProjectUtils.INSTANCE.getMainManifest(facet)
         val manifest = AndroidUtils.loadDomElement(facet.module, xml.virtualFile, Manifest::class.java)!!
         val resourceUrl = getShortcutResourceUrl(manifest)
         println("resourceUrl: ${resourceUrl?.name}")

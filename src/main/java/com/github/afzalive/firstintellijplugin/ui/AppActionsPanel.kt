@@ -7,6 +7,7 @@ import com.github.afzalive.firstintellijplugin.actions.MORE_THAN_ONE_MODULE_WITH
 import com.github.afzalive.firstintellijplugin.services.MyProjectService
 import com.github.afzalive.firstintellijplugin.services.MyProjectService.AASProjectConfigurationException
 import com.github.afzalive.firstintellijplugin.services.ResourceUrl
+import com.google.assistant.plugin.common.utils.ProjectUtils
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
@@ -74,7 +75,7 @@ class AppActionsPanel(private val project: Project) : JPanel(BorderLayout()) {
     private fun getXmlResourceUrl(module: Module): ResourceUrl? {
         val facet = AndroidFacet.getInstance(module) ?: return null
         return try {
-            val xmlFile = ManifestUtils.getMainManifest(facet)
+            val xmlFile = ProjectUtils.INSTANCE.getMainManifest(facet)
             val manifest = AndroidUtils.loadDomElement(
                 facet.module, xmlFile.virtualFile,
                 Manifest::class.java

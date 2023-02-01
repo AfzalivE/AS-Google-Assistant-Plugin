@@ -4,6 +4,7 @@ import com.android.tools.idea.editors.manifest.ManifestUtils
 import com.android.tools.idea.model.AndroidModel
 import com.github.afzalive.firstintellijplugin.services.MyProjectService
 import com.github.afzalive.firstintellijplugin.services.ResourceUrl
+import com.google.assistant.plugin.common.utils.ProjectUtils
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
@@ -74,7 +75,7 @@ class AppActionsAction : AnAction() {
     private fun getXmlResourceUrl(module: Module): ResourceUrl? {
         val facet = AndroidFacet.getInstance(module) ?: return null
         return try {
-            val xmlFile = ManifestUtils.getMainManifest(facet)
+            val xmlFile = ProjectUtils.INSTANCE.getMainManifest(facet)
             val manifest = AndroidUtils.loadDomElement(
                 facet.module, xmlFile.virtualFile,
                 Manifest::class.java

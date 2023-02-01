@@ -1,4 +1,4 @@
-import org.gradle.wrapper.GradleWrapperMain
+import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -20,11 +20,11 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.6.0"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.3.0"
+    id("org.jetbrains.intellij") version "1.12.0"
     // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "2.0.0"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
 //    kotlin("jvm") version "1.8.0"
@@ -41,7 +41,7 @@ repositories {
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
-    localPath.set("/Users/afzal/Dev/Android Studio.app/Contents")
+    localPath.set(properties("ideDir"))
 //    version.set(properties("platformVersion"))
     type.set(properties("platformType"))
 
@@ -53,7 +53,7 @@ tasks {
     named("runIde") {
         // Absolute path to installed target 3.5 Android Studio to use as IDE Development Instance
         // The "Contents" directory is macOS specific.
-        setProperty("ideDir", file("/Users/afzal/Dev/Android Studio.app/Contents"))
+//        setProperty("ideDir", file("/Users/afzal/Dev/Android Studio.app/Contents"))
     }
 
     named("instrumentCode") {
@@ -111,9 +111,13 @@ tasks {
 
         // Get the latest available change notes from the changelog file
         changeNotes.set(provider {
-            changelog.run {
-                getOrNull(properties("pluginVersion")) ?: getLatest()
-            }.toHTML()
+            with(changelog) {
+                renderItem(
+                    getOrNull(properties("pluginVersion"))
+                        ?: runCatching { getLatest() }.getOrElse { getUnreleased() },
+                    Changelog.OutputType.HTML,
+                )
+            }
         })
     }
 

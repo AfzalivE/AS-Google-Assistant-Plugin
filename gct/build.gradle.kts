@@ -18,10 +18,10 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
     compileOnly(fileTree("../libs") { include("*.jar") })
     // Needed because this isn't an intellij plugin module, so we need to get IDEA classes from somewhere.
-    compileOnly(fileTree("/Users/afzal/Dev/Android Studio.app/Contents/lib") { include("*.jar") })
+    compileOnly(fileTree("${properties("ideDir")}/lib") { include("*.jar") })
     // https://mvnrepository.com/artifact/com.google.apis/google-api-services-oauth2
     implementation("com.google.apis:google-api-services-oauth2:v2-rev66-1.17.0-rc")
 

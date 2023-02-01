@@ -29,7 +29,7 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.util.concurrency.EdtExecutorService
 import org.jetbrains.android.dom.manifest.ManifestDomFileDescription
 import org.jetbrains.android.facet.AndroidFacet
-import org.jetbrains.android.facet.SourceProviderManager.Companion.getInstance
+import org.jetbrains.android.facet.SourceProviderManager
 import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import org.jetbrains.kotlin.idea.util.projectStructure.getModule
 import org.w3c.dom.Document
@@ -215,6 +215,7 @@ class ProjectStateManager(project: Project) {
         var findFile = PsiManager.getInstance(project).findFile(file)
         if (findFile !is XmlFile) {
             findFile = null
+            return false
         }
         val xmlFile = findFile as XmlFile
         if (Intrinsics.areEqual(file.name, "AndroidManifest.xml")) {
@@ -227,7 +228,7 @@ class ProjectStateManager(project: Project) {
                 Intrinsics.checkNotNullExpressionValue(children, "file.children")
                 if (children.isNotEmpty()) {
                     z = true
-                    `$this$any$iv` = getInstance(facet).sources.resDirectories
+                    `$this$any$iv` = SourceProviderManager.getInstance(facet).sources.resDirectories
                     if (`$this$any$iv` is Collection<*> || !(`$this$any$iv` as Collection<*>).isEmpty()) {
                         for (`element$iv` in `$this$any$iv`) {
                             val resDir = `element$iv`
@@ -284,7 +285,7 @@ class ProjectStateManager(project: Project) {
             }
             z = false
             val couldBeRelevantNavigationFolder2 = z
-            `$this$any$iv` = getInstance(facet!!).sources.resDirectories
+            `$this$any$iv` = SourceProviderManager.getInstance(facet).sources.resDirectories
             if (`$this$any$iv` is Collection<*>) {
             }
             //            while (r0.hasNext()) {

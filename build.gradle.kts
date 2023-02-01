@@ -142,23 +142,21 @@ tasks {
     }
 }
 dependencies {
+    // Needed for ComponentName, Uri, and Intent usage in the plugin. Pre-loaded in AS.
     compileOnly(fileTree("/Users/afzal/Dev/SDKs/macos-android-sdk/platforms/android-28") { include("android.jar") })
     implementation(kotlin("stdlib-jdk8"))
+    
+    // GCT classes will already be loaded in AS, but we need them to compile the plugin.
     compileOnly(project(":gct"))
     implementation("com.google.apis:google-api-services-oauth2:v2-rev66-1.17.0-rc")
-
     implementation("javax.servlet:javax.servlet-api:3.0.1")
-    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
     implementation("com.google.protobuf:protobuf-java:3.21.12")
-    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java-util
     implementation("com.google.protobuf:protobuf-java-util:3.21.12") {
+        // Guava is already loaded in AS so this avoids a classloading error.
         isTransitive = false
     }
-    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.10.1")
-    // https://mvnrepository.com/artifact/org.json/json
     implementation("org.json:json:20220924")
 
 

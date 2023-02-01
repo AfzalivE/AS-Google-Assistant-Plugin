@@ -4,15 +4,43 @@
     <name>First-Intellij-Plugin</name>
     <vendor>afzalive</vendor>
 
-    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.androidstudio</depends>
+    <depends>org.jetbrains.android</depends>
+    <depends>com.google.gct.login</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.afzalive.firstintellijplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.afzalive.firstintellijplugin.services.MyProjectService"/>
+<!--        <applicationService-->
+<!--                serviceImplementation="com.github.afzalive.firstintellijplugin.services.MyApplicationService"/>-->
+<!--        <projectService serviceImplementation="com.github.afzalive.firstintellijplugin.services.MyProjectService"/>-->
+<!--        <toolWindow factoryClass="com.github.afzalive.firstintellijplugin.ui.AppActionsToolWindowFactory" secondary="false" anchor="right"-->
+<!--                    id="AppActions"  />-->
+        <postStartupActivity implementation="com.google.assistant.plugin.appactions.extensions.PluginStartupExtension" />
+        <!--        <toolWindow id="Shortcuts Test Tool" secondary="true" icon="/appactions/assistant_13dp.svg" anchor="right"-->
+        <!--                    factoryClass="com.google.assistant.plugin.shortcuts.ui.ShortcutsToolWindowFactory"/>-->
+    </extensions>
+    <extensions defaultExtensionNs="com.android.tools.idea.assistant">
+        <assistantBundleCreator implementation="com.google.assistant.plugin.appactions.extensions.AppActionsAssistantBundleCreator" />
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.afzalive.firstintellijplugin.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+<!--        <listener class="com.github.afzalive.firstintellijplugin.listeners.MyProjectManagerListener"-->
+<!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
+        <listener class="com.google.assistant.plugin.appactions.extensions.AppEventListener" 
+                  topic="com.intellij.ide.AppLifecycleListener" />
     </applicationListeners>
+
+    <actions>
+        <group id="GroupedActionsAssistant" text="Google Assistant" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+<!--            <action id="AATT" class="com.github.afzalive.firstintellijplugin.actions.AppActionsAction"-->
+<!--                    text="App Actions Test Tool" description="App Actions Test Tool">-->
+<!--                <add-to-group group-id="EditorPopupMenu" anchor="last"/>-->
+<!--            </action>-->
+            <action id="AATT2" class="com.google.assistant.plugin.appactions.actions.AppActionsAction"
+                    text="App Actions Test Tool 2" description="App Actions Test Tool 2">
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt A"/>
+                <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            </action>
+        </group>
+    </actions>
 </idea-plugin>

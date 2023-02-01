@@ -1,7 +1,20 @@
+import org.gradle.wrapper.GradleWrapperMain
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun properties(key: String) = project.findProperty(key).toString()
+
+buildscript {
+    repositories {
+        maven {
+            url = java.net.URI.create("https://www.jetbrains.com/intellij-repository/releases")
+        }
+    }
+
+    dependencies {
+        classpath("org.jetbrains.intellij.plugins:gradle-intellij-plugin:1.3.0")
+    }
+}
 
 plugins {
     // Java support
@@ -14,6 +27,7 @@ plugins {
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
+//    kotlin("jvm") version "1.8.0"
 }
 
 group = properties("pluginGroup")
@@ -27,11 +41,24 @@ repositories {
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
+    localPath.set("/Users/afzal/Dev/Android Studio.app/Contents")
+//    version.set(properties("platformVersion"))
     type.set(properties("platformType"))
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+}
+
+tasks {
+    named("runIde") {
+        // Absolute path to installed target 3.5 Android Studio to use as IDE Development Instance
+        // The "Contents" directory is macOS specific.
+        setProperty("ideDir", file("/Users/afzal/Dev/Android Studio.app/Contents"))
+    }
+
+    named("instrumentCode") {
+        setProperty("compilerVersion", "213.6461.79")
+    }
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -113,4 +140,29 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
     }
+}
+dependencies {
+    compileOnly(fileTree("/Users/afzal/Dev/SDKs/macos-android-sdk/platforms/android-28") { include("android.jar") })
+    implementation(kotlin("stdlib-jdk8"))
+    compileOnly(project(":gct"))
+    implementation("com.google.apis:google-api-services-oauth2:v2-rev66-1.17.0-rc")
+
+    implementation("javax.servlet:javax.servlet-api:3.0.1")
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+    implementation("com.google.protobuf:protobuf-java:3.21.12")
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java-util
+    implementation("com.google.protobuf:protobuf-java-util:3.21.12") {
+        isTransitive = false
+    }
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation("com.google.code.gson:gson:2.10.1")
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation("org.json:json:20220924")
+
+
+}
+kotlin {
+//    jvmToolchain(8)
 }

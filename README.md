@@ -1,7 +1,6 @@
 # AS Google Assistant plugin
 
-![Build](https://github.com/AfzalivE/AS-Google-Assistant-Plugin
-/workflows/Build/badge.svg)
+![Build](https://github.com/AfzalivE/AS-Google-Assistant-Plugin/workflows/Build/badge.svg)
 
 This is a compilable project from a decompiled [Google Assistant plugin](https://plugins.jetbrains.com/plugin/16739-google-assistant) for Android Studio.
 

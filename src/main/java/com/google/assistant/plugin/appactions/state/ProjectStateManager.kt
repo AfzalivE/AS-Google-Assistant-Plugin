@@ -14,6 +14,7 @@ import com.android.tools.idea.model.MergedManifestSnapshot
 import com.android.tools.idea.projectsystem.PROJECT_SYSTEM_SYNC_TOPIC
 import com.android.tools.idea.projectsystem.ProjectSystemSyncManager.SyncResult
 import com.android.tools.idea.projectsystem.ProjectSystemSyncManager.SyncResultListener
+import com.android.tools.idea.projectsystem.SourceProviderManager
 import com.android.tools.idea.res.LocalResourceRepository
 import com.android.tools.idea.res.ResourceRepositoryManager
 import com.google.assistant.plugin.appactions.state.AppActionsState.*
@@ -29,7 +30,6 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.util.concurrency.EdtExecutorService
 import org.jetbrains.android.dom.manifest.ManifestDomFileDescription
 import org.jetbrains.android.facet.AndroidFacet
-import org.jetbrains.android.facet.SourceProviderManager
 import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import org.jetbrains.kotlin.idea.util.projectStructure.getModule
 import org.w3c.dom.Document

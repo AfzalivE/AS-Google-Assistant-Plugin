@@ -47,6 +47,9 @@ intellij {
 }
 
 tasks {
+    buildSearchableOptions {
+        enabled = false
+    }
     named("instrumentCode") {
         setProperty("compilerVersion", "213.6461.79")
     }

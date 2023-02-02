@@ -76,17 +76,6 @@ qodana {
 }
 
 tasks {
-    // Set the JVM compatibility versions
-    properties("javaVersion").let {
-        withType<JavaCompile> {
-            sourceCompatibility = it
-            targetCompatibility = it
-        }
-        withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = it
-        }
-    }
-
     wrapper {
         gradleVersion = properties("gradleVersion")
     }
@@ -165,5 +154,5 @@ dependencies {
 
 }
 kotlin {
-//    jvmToolchain(8)
+    jvmToolchain(17)
 }

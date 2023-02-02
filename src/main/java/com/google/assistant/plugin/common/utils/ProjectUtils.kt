@@ -427,8 +427,8 @@ class ProjectUtils private constructor() {
 
     val isInternalUser: Boolean
         get() {
-            val googleLogin = GoogleLogin.getInstance()
-            val email = googleLogin.email
+            val googleLogin = GoogleLogin.instance
+            val email = googleLogin.getEmail()
             return email?.contains("@google.com") ?: false
         }
 

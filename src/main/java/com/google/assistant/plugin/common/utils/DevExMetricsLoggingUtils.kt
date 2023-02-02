@@ -24,9 +24,8 @@ class DevExMetricsLoggingUtils(project: Project) {
 
     /* JADX INFO: Access modifiers changed from: private */
     fun logDevExEvent(eventType: DevExMetricsClientEventType.Id?) {
-        val accessToken = GoogleLogin.getInstance().fetchAccessToken()
+        val accessToken = GoogleLogin.instance.fetchOAuth2Token()
             ?: throw ActionsBuilderException("Devex metrics logging failed when obtaining access token.")
-        Intrinsics.checkNotNullExpressionValue(accessToken, "GoogleLogin.getInstance(…SS_TOKEN_FAILURE_MESSAGE)")
         val packageName = ProjectUtils.INSTANCE.readPackageNameSafely(project)
         httpClient.logDevExEvent(accessToken, packageName, eventType!!, ProjectUtils.INSTANCE.isInternalUser)
     }

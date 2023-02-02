@@ -141,9 +141,7 @@ public final class WelcomeFrame extends AppActionsFrame {
         jPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
         Unit unit2 = Unit.INSTANCE;
         internalVerticalPanel.add(jPanel2, c);
-        GoogleLogin googleLogin = GoogleLogin.getInstance();
-        Intrinsics.checkNotNullExpressionValue(googleLogin, "GoogleLogin.getInstance()");
-        if (googleLogin.isLoggedIn()) {
+        if (GoogleLogin.getInstance().isLoggedIn()) {
             c.gridy++;
             c.gridx = 0;
             c.fill = 1;
@@ -181,34 +179,26 @@ public final class WelcomeFrame extends AppActionsFrame {
 
     /* JADX INFO: Access modifiers changed from: private */
     public final void login() {
-        try {
-            getModel().setState(PluginState.LOGGED_IN_NO_PREVIEW);
-            getMainPanel().refreshState();
-            GoogleLogin.promptToLogIn((String) null, new IGoogleLoginCompletedCallback() { // from class: com.google.assistant.plugin.appactions.ui.toolwindow.frames.WelcomeFrame$login$1
-                public final void onLoginCompleted() {
-                    ApplicationManager.getApplication().invokeLater(new Runnable() { // from class: com.google.assistant.plugin.appactions.ui.toolwindow.frames.WelcomeFrame$login$1.1
-                        @Override // java.lang.Runnable
-                        public final void run() {
-                            GoogleLogin googleLogin = GoogleLogin.getInstance();
-                            Intrinsics.checkNotNullExpressionValue(googleLogin, "GoogleLogin.getInstance()");
-                            if (!googleLogin.isLoggedIn()) {
-                                WelcomeFrame.this.getModel().setState(PluginState.WELCOME_PAGE);
-                            } else {
-                                if ((!WelcomeFrame.this.getModel().getSupportedIntents().isEmpty()) && WelcomeFrame.this.getModel().getAssistantLink() != null) {
-                                    WelcomeFrame.this.getModel().setState(PluginState.LOGGED_IN_PREVIEW_EXISTS);
-                                } else {
-                                    WelcomeFrame.this.getModel().setState(PluginState.LOGGED_IN_NO_PREVIEW);
-                                }
-                            }
-                            WelcomeFrame.this.getMainPanel().refreshState();
-                        }
-                    }, ModalityState.any());
+        getModel().setState(PluginState.LOGGED_IN_NO_PREVIEW);
+        getMainPanel().refreshState();
+        // from class: com.google.assistant.plugin.appactions.ui.toolwindow.frames.WelcomeFrame$login$1
+        if (GoogleLogin.getInstance().isLoggedIn()) return;
+        GoogleLogin.getInstance().logIn(null, () -> ApplicationManager.getApplication().invokeLater(new Runnable() { // from class: com.google.assistant.plugin.appactions.ui.toolwindow.frames.WelcomeFrame$login$1.1
+            @Override // java.lang.Runnable
+            public final void run() {
+                GoogleLogin googleLogin = GoogleLogin.getInstance();
+                if (!googleLogin.isLoggedIn()) {
+                    WelcomeFrame.this.getModel().setState(PluginState.WELCOME_PAGE);
+                } else {
+                    if ((!WelcomeFrame.this.getModel().getSupportedIntents().isEmpty()) && WelcomeFrame.this.getModel().getAssistantLink() != null) {
+                        WelcomeFrame.this.getModel().setState(PluginState.LOGGED_IN_PREVIEW_EXISTS);
+                    } else {
+                        WelcomeFrame.this.getModel().setState(PluginState.LOGGED_IN_NO_PREVIEW);
+                    }
                 }
-            });
-        } catch (InvalidThreadTypeException e) {
-            LoggingUtils.INSTANCE.error("Something went wrong when attempting to login", e);
-            e.printStackTrace();
-        }
+                WelcomeFrame.this.getMainPanel().refreshState();
+            }
+        }, ModalityState.any()));
     }
 
     private final JPanel getWelcomeTitle() {
@@ -260,11 +250,9 @@ public final class WelcomeFrame extends AppActionsFrame {
         String str;
         StringBuilder append = new StringBuilder().append("\n            Signed in as ");
         GoogleLogin googleLogin = GoogleLogin.getInstance();
-        Intrinsics.checkNotNullExpressionValue(googleLogin, "GoogleLogin.getInstance()");
         String signedInLabelText = StringsKt.trimIndent(append.append(googleLogin.getEmail()).append(" in Android Studio.\n        ").toString());
         Box box = Box.createVerticalBox();
         GoogleLogin googleLogin2 = GoogleLogin.getInstance();
-        Intrinsics.checkNotNullExpressionValue(googleLogin2, "GoogleLogin.getInstance()");
         if (googleLogin2.isLoggedIn()) {
             this.signLabel.setText(signedInLabelText);
             box.add(this.signLabel);

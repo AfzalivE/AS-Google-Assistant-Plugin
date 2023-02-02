@@ -147,7 +147,7 @@ public final class TestPreviewFrame extends AppActionsFrame {
         this.appDataPanel.setLocale(getModel().getLocale());
         AppDataPanel appDataPanel = this.appDataPanel;
         AndroidAppState selectedAndroidAppState = getModel().getSelectedAndroidAppState();
-        appDataPanel.setModuleName(selectedAndroidAppState != null ? selectedAndroidAppState.getModuleName() : null);
+        appDataPanel.setModuleName(selectedAndroidAppState != null ? selectedAndroidAppState.moduleName : null);
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -155,7 +155,6 @@ public final class TestPreviewFrame extends AppActionsFrame {
         Plugin.AndroidActionPackageResponse.SupportedIntent selectedIntent = getModel().getSelectedIntent();
         DeviceProperties selectedDevice = getModel().getSelectedDevice();
         GoogleLogin googleLogin = GoogleLogin.getInstance();
-        Intrinsics.checkNotNullExpressionValue(googleLogin, "GoogleLogin.getInstance()");
         if (googleLogin.isLoggedIn() && selectedIntent != null && !getModel().getSupportedIntents().isEmpty() && selectedDevice != null) {
             Plugin.AndroidActionPackageResponse.SupportedIntent.SupportedIntentCapabilities supportedIntentCapabilities = selectedIntent.getSupportedIntentCapabilities();
             Intrinsics.checkNotNullExpressionValue(supportedIntentCapabilities, "selectedIntent.supportedIntentCapabilities");
@@ -299,12 +298,10 @@ public final class TestPreviewFrame extends AppActionsFrame {
     public final void onDeletePreviewRun(ProgressIndicator progressIndicator) throws ActionsBuilderException, IOException {
         enableInputFields(false);
         GoogleLogin googleLogin = GoogleLogin.getInstance();
-        Intrinsics.checkNotNullExpressionValue(googleLogin, "GoogleLogin.getInstance()");
         if (!googleLogin.isLoggedIn()) {
             throw new ActionsBuilderException("User is not logged in.");
         }
         GoogleLogin googleLogin2 = GoogleLogin.getInstance();
-        Intrinsics.checkNotNullExpressionValue(googleLogin2, "GoogleLogin.getInstance()");
         if (googleLogin2.getActiveUser() == null) {
             throw new ActionsBuilderException("Failed to obtain user credentials.");
         }
@@ -314,10 +311,9 @@ public final class TestPreviewFrame extends AppActionsFrame {
         if (selectedAndroidAppState == null) {
             throw new ActionsBuilderException("Changes made before deleting preview.");
         }
-        String packageName = selectedAndroidAppState.getApplicationId();
-        String accessToken = GoogleLogin.getInstance().fetchAccessToken();
+        String accessToken = GoogleLogin.getInstance().fetchOAuth2Token();
+        String packageName = selectedAndroidAppState.applicationId;
         if (accessToken != null) {
-            Intrinsics.checkNotNullExpressionValue(accessToken, "GoogleLogin.getInstance(…btain user credentials.\")");
             httpClient.deletePreview(accessToken, packageName);
             DialogUtils.INSTANCE.showInfoMessage("Preview deleted successfully for package " + packageName);
             return;

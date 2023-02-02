@@ -62,7 +62,6 @@ public final class AppActionsPanel extends JPanel {
         this.overlayLayoutPanel = panel;
         setEnabled(false);
         GoogleLogin googleLogin = GoogleLogin.getInstance();
-        Intrinsics.checkNotNullExpressionValue(googleLogin, "GoogleLogin.getInstance()");
         if (!googleLogin.isLoggedIn()) {
             this.model.setState(PluginState.WELCOME_PAGE);
         } else {
@@ -137,7 +136,7 @@ public final class AppActionsPanel extends JPanel {
                 Intrinsics.checkNotNullParameter(list, "events");
                 try {
                     AndroidAppState selectedAndroidAppState = AppActionsPanel.this.getModel().getSelectedAndroidAppState();
-                    if (selectedAndroidAppState == null || (actionModule = ModuleManager.getInstance(AppActionsPanel.this.getModel().getProject()).findModuleByName(selectedAndroidAppState.getModuleName())) == null) {
+                    if (selectedAndroidAppState == null || (actionModule = ModuleManager.getInstance(AppActionsPanel.this.getModel().getProject()).findModuleByName(selectedAndroidAppState.moduleName)) == null) {
                         return;
                     }
                     Intrinsics.checkNotNullExpressionValue(actionModule, "ModuleManager.getInstanc…ate.moduleName) ?: return");

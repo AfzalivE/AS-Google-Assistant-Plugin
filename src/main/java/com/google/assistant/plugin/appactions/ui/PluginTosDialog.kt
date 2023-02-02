@@ -30,9 +30,8 @@ class PluginTosDialog : DialogWrapper(false) {
     }
 
     override fun doOKAction() {
-        val accessToken = GoogleLogin.getInstance().fetchAccessToken()
+        val accessToken = GoogleLogin.instance.fetchOAuth2Token()
         if (accessToken != null) {
-            Intrinsics.checkNotNullExpressionValue(accessToken, "GoogleLogin.getInstance(…SS_TOKEN_FAILURE_MESSAGE)")
             httpClient.acceptPluginToS(accessToken)
             super.doOKAction()
             return

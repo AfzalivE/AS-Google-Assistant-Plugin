@@ -71,13 +71,11 @@ abstract class AppActionsFrame(model: Model, mainPanel: AppActionsPanel) : JPane
         if (!z) {
             throw AssertionError("Resolving references on dispatch thread leads to live lock")
         }
-        val googleLogin = GoogleLogin.getInstance()
-        Intrinsics.checkNotNullExpressionValue(googleLogin, "GoogleLogin.getInstance()")
+        val googleLogin = GoogleLogin.instance
         if (!googleLogin.isLoggedIn) {
             throw ActionsBuilderException("User is not logged in.")
         }
-        val googleLogin2 = GoogleLogin.getInstance()
-        Intrinsics.checkNotNullExpressionValue(googleLogin2, "GoogleLogin.getInstance()")
+        val googleLogin2 = GoogleLogin.instance
         if (googleLogin2.activeUser == null) {
             throw ActionsBuilderException("Failed to obtain user credentials.")
         }
@@ -115,12 +113,8 @@ abstract class AppActionsFrame(model: Model, mainPanel: AppActionsPanel) : JPane
                                     appResources
                                 )
                                 progressIndicator.text = "Creating preview..."
-                                val accessToken = GoogleLogin.getInstance().fetchAccessToken()
+                                val accessToken = GoogleLogin.instance.fetchOAuth2Token()
                                     ?: throw ActionsBuilderException("Failed to obtain user credentials.")
-                                Intrinsics.checkNotNullExpressionValue(
-                                    accessToken,
-                                    "GoogleLogin.getInstance(…IN_CREDENTIALS_ERROR_MSG)"
-                                )
                                 try {
                                     try {
                                         val aapResp = httpClient.updatePreviewV2(

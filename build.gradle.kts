@@ -147,13 +147,12 @@ tasks {
 }
 dependencies {
     // Needed for ComponentName, Uri, and Intent usage in the plugin. Pre-loaded in AS.
-    compileOnly(fileTree("/Users/afzal/Dev/SDKs/macos-android-sdk/platforms/android-28") { include("android.jar") })
+
+    compileOnly(fileTree(properties("androidJarDir")) { include("android.jar") })
     implementation(kotlin("stdlib-jdk8"))
     
     // GCT classes will already be loaded in AS, but we need them to compile the plugin.
-    compileOnly(project(":gct"))
-    implementation("com.google.apis:google-api-services-oauth2:v2-rev66-1.17.0-rc")
-    implementation("javax.servlet:javax.servlet-api:3.0.1")
+    compileOnly(fileTree("${properties("ideDir")}/plugins/google-login-as/lib") { include("*.jar") })
     implementation("com.google.protobuf:protobuf-java:3.21.12")
     implementation("com.google.protobuf:protobuf-java-util:3.21.12") {
         // Guava is already loaded in AS so this avoids a classloading error.

@@ -1,6 +1,5 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -27,7 +26,6 @@ plugins {
     id("org.jetbrains.changelog") version "2.0.0"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
-//    kotlin("jvm") version "1.8.0"
 }
 
 group = properties("pluginGroup")
@@ -42,7 +40,6 @@ repositories {
 intellij {
     pluginName.set(properties("pluginName"))
     localPath.set(properties("ideDir"))
-//    version.set(properties("platformVersion"))
     type.set(properties("platformType"))
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
@@ -50,12 +47,6 @@ intellij {
 }
 
 tasks {
-    named("runIde") {
-        // Absolute path to installed target 3.5 Android Studio to use as IDE Development Instance
-        // The "Contents" directory is macOS specific.
-//        setProperty("ideDir", file("/Users/afzal/Dev/Android Studio.app/Contents"))
-    }
-
     named("instrumentCode") {
         setProperty("compilerVersion", "213.6461.79")
     }
@@ -136,7 +127,6 @@ tasks {
 }
 dependencies {
     // Needed for ComponentName, Uri, and Intent usage in the plugin. Pre-loaded in AS.
-
     compileOnly(fileTree(properties("androidJarDir")) { include("android.jar") })
     implementation(kotlin("stdlib-jdk8"))
     

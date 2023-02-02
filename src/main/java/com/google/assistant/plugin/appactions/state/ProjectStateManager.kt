@@ -115,7 +115,9 @@ class ProjectStateManager(project: Project) {
 
     /* JADX INFO: Access modifiers changed from: private */
     fun ingestAllAndroidFacets() {
-        val `$this$forEach$iv`: Iterable<*> = project.allModules()
+        val `$this$forEach$iv`: Iterable<*> = project.allModules().filterNot { 
+            it.name.contains("test", ignoreCase = true)
+        }
         for (`element$iv` in `$this$forEach$iv`) {
             val module = `element$iv` as Module?
             val facet = AndroidFacet.getInstance(module!!)
@@ -124,7 +126,6 @@ class ProjectStateManager(project: Project) {
     }
 
     private fun ingestAndroidFacet(facet: AndroidFacet) {
-        var appId: String?
         val configuration = facet.configuration
         if (!configuration.isAppProject) {
             return
@@ -164,32 +165,21 @@ class ProjectStateManager(project: Project) {
         }
         val actionsResourceRef = getMetadataResource(document)
         if (actionsResourceRef == null) {
-            updateAndroidAppsState(moduleName, appId, AppActionsState.MissingManifestMetadata.INSTANCE)
+            updateAndroidAppsState(moduleName, appId, MissingManifestMetadata.INSTANCE)
         } else if (!actionsResourceRef.startsWith("@xml/", false)) {
             updateAndroidAppsState(moduleName, appId, InvalidActionsResource(actionsResourceRef))
         } else {
             val actionsResourceName = actionsResourceRef.substring("@xml/".length)
-            Intrinsics.checkNotNullExpressionValue(
-                actionsResourceName,
-                "(this as java.lang.String).substring(startIndex)"
-            )
             val projectResources: LocalResourceRepository = ResourceRepositoryManager.getProjectResources(facet)
-            Intrinsics.checkNotNullExpressionValue(
-                projectResources,
-                "ResourceRepositoryManage…etProjectResources(facet)"
-            )
             val xmlResources: List<*> =
                 projectResources.getResources(ResourceNamespace.TODO(), ResourceType.XML, actionsResourceName)
-            Intrinsics.checkNotNullExpressionValue(xmlResources, "projectResources.getReso…onsResourceName\n        )")
             if (xmlResources.isEmpty()) {
                 updateAndroidAppsState(moduleName, appId, MissingAppActionsXml(actionsResourceName))
                 return
             }
             val obj = xmlResources[0]!!
-            Intrinsics.checkNotNullExpressionValue(obj, "xmlResources[0]")
             val resourceValue: ResourceValue = (obj as ResourceItem).resourceValue
             if (resourceValue !is ResourceItem && resourceValue !is ResourceValueImpl) {
-                Intrinsics.checkNotNullExpressionValue(resourceValue, "resourceValue")
                 updateAndroidAppsState(moduleName, appId, UnexpectedAppActionsResource(resourceValue))
                 return
             }
@@ -300,16 +290,14 @@ class ProjectStateManager(project: Project) {
             ?: throw NullPointerException("null cannot be cast to non-null type org.w3c.dom.NodeList")
         val resultActions = evaluate as NodeList
         val actionsMetadataResource = getActionsOrShortcutsMetadataString(resultActions)
-        if (actionsMetadataResource.length > 0) {
+        if (actionsMetadataResource.isNotEmpty()) {
             return actionsMetadataResource
         }
         val evaluate2 = shortcutsMetaDataExpression.evaluate(document, XPathConstants.NODESET)
             ?: throw NullPointerException("null cannot be cast to non-null type org.w3c.dom.NodeList")
         val resultShortcuts = evaluate2 as NodeList
         val shortcutsMetadataResource = getActionsOrShortcutsMetadataString(resultShortcuts)
-        return if (shortcutsMetadataResource.length > 0) {
-            shortcutsMetadataResource
-        } else null
+        return shortcutsMetadataResource.ifEmpty { null }
     }
 
     private fun getActionsOrShortcutsMetadataString(xmlNode: NodeList): String {

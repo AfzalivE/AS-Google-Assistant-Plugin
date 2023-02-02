@@ -23,7 +23,14 @@ fun CreatePreviewPanel.updateAppModuleComboBox(projectState: ProjectState, oldSt
         if (androidAppState.appActionsState is AppActionsState.Ready) {
             this.model.androidAppsArrayList.add(androidAppState)
         } else {
-            LoggingUtils.INSTANCE.error("Module $moduleName doesn't have App Actions correctly configured")
+            when (androidAppState.appActionsState) {
+                // Ignore missing app actions because it might just be a module that doesn't have app actions.
+                is AppActionsState.MissingManifestMetadata,
+                is AppActionsState.MissingAppActionsXml -> {}
+                else -> {
+                    LoggingUtils.INSTANCE.error("Module $moduleName doesn't have App Actions correctly configured, ${androidAppState.appActionsState}")
+                }
+            }
         }
     }
     if (lastSize <= 1 && this.model

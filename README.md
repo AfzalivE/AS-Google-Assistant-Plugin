@@ -12,4 +12,7 @@ This is a compilable project from a decompiled [Google Assistant plugin](https:/
 
 ## Known issues
 
-Sometimes, the `Create Preview` button does nothing, a Gradle Sync or Restarting Android Studio is able to fix that.
+- Sometimes, the `Create Preview` button does nothing, a Gradle Sync or Restarting Android Studio is able to fix that.
+- Giraffe and Flamingo version are compatible but they're not compatible with Electric Eel.
+
+Electric Eel and Dolphin versions have a different way of importing some dependencies because I hadn't figured out that all the jars I needed were in the `Android Studio.app` package.

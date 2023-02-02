@@ -10,3 +10,7 @@ This is a compilable project from a decompiled [Google Assistant plugin](https:/
 1. Open the project in IDEA.
 1. Update `ideDir` and `androidJarDir` in `gradle.properties`!
 1. To build a zip file to install in Android Studio, run the `buildPlugin` task.
+
+## Known issues
+
+Sometimes, the `Create Preview` button does nothing, a Gradle Sync or Restarting Android Studio is able to fix that.

@@ -11,6 +11,7 @@ import com.android.tools.idea.editors.manifest.ManifestUtils
 import com.android.tools.idea.model.AndroidModel
 import com.android.tools.idea.res.LocalResourceRepository
 import com.android.tools.idea.res.ResourceRepositoryManager
+import com.android.tools.idea.res.StudioResourceRepositoryManager
 import com.google.assistant.plugin.appactions.Constants
 import com.google.assistant.plugin.appactions.exceptions.AASProjectConfigurationException
 import com.google.assistant.plugin.appactions.state.AndroidAppState
@@ -230,7 +231,7 @@ class ProjectUtils private constructor() {
         val moduleManager = ModuleManager.getInstance(project)
         for (module: Module in moduleManager.modules) {
             val xmlResourceUrl = getXmlResourceUrl(module)
-            val repositoryManager = ResourceRepositoryManager.getInstance(module)
+            val repositoryManager = StudioResourceRepositoryManager.getInstance(module)
             if (repositoryManager != null && xmlResourceUrl != null) {
                 val appResources = repositoryManager.appResources
                 Intrinsics.checkNotNullExpressionValue(appResources, "repositoryManager.appResources")
@@ -313,7 +314,7 @@ class ProjectUtils private constructor() {
 
     fun getAppResources(module: Module): LocalResourceRepository {
         Intrinsics.checkNotNullParameter(module, "module")
-        val resourceRepositoryManager = ResourceRepositoryManager.getInstance(module)
+        val resourceRepositoryManager = StudioResourceRepositoryManager.getInstance(module)
         Intrinsics.checkNotNull(resourceRepositoryManager)
         Intrinsics.checkNotNullExpressionValue(
             resourceRepositoryManager,

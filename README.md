@@ -2,6 +2,16 @@
 
 ![Build](https://github.com/AfzalivE/AS-Google-Assistant-Plugin/workflows/Build/badge.svg)
 
+<!-- Plugin description -->
+The Google Assistant plugin enables you to test and validate your App Actions and Shortcuts integrations with a convenient UI to specify the intent and parameters you would like to invoke. Supported on Android Studio 4.0+.
+
+Features:
+    - Simple UI to specify the intent and parameters and directly initiate the experience in Assistant
+  - Support for enabling a preview of voice query invocation in Assistant for select sample queries only
+
+To learn more about how to use the plugin, visit the App Actions documentation. The Google Assistant plugin is still in Beta. You can find known issues here. We also want to hear from you if you encounter any bugs - please share your feedback on our Public Issue Tracker.
+<!-- Plugin description end -->
+
 This is a compilable project from a decompiled [Google Assistant plugin](https://plugins.jetbrains.com/plugin/16739-google-assistant) for Android Studio.
 
 ## Building

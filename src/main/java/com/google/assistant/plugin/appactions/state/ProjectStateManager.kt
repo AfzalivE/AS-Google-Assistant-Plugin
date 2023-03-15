@@ -17,6 +17,7 @@ import com.android.tools.idea.projectsystem.ProjectSystemSyncManager.SyncResultL
 import com.android.tools.idea.projectsystem.SourceProviderManager
 import com.android.tools.idea.res.LocalResourceRepository
 import com.android.tools.idea.res.ResourceRepositoryManager
+import com.android.tools.idea.res.StudioResourceRepositoryManager
 import com.google.assistant.plugin.appactions.state.AppActionsState.*
 import com.google.assistant.plugin.common.utils.LoggingUtils
 import com.intellij.openapi.module.Module
@@ -170,7 +171,7 @@ class ProjectStateManager(project: Project) {
             updateAndroidAppsState(moduleName, appId, InvalidActionsResource(actionsResourceRef))
         } else {
             val actionsResourceName = actionsResourceRef.substring("@xml/".length)
-            val projectResources: LocalResourceRepository = ResourceRepositoryManager.getProjectResources(facet)
+            val projectResources: LocalResourceRepository = StudioResourceRepositoryManager.getProjectResources(facet)
             val xmlResources: List<*> =
                 projectResources.getResources(ResourceNamespace.TODO(), ResourceType.XML, actionsResourceName)
             if (xmlResources.isEmpty()) {

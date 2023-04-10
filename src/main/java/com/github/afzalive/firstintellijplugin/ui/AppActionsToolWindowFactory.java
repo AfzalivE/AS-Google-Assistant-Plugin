@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class AppActionsToolWindowFactory implements ToolWindowFactory {
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        Content content = ContentFactory.SERVICE.getInstance().createContent(new AppActionsPanel(project), "", false);
+        Content content = ContentFactory.getInstance().createContent(new AppActionsPanel(project), "", false);
         toolWindow.getContentManager().addContent(content);
     }
 }

@@ -6,7 +6,6 @@
 
     <depends>com.intellij.modules.androidstudio</depends>
     <depends>org.jetbrains.android</depends>
-    <depends>com.google.gct.login</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 <!--        <applicationService-->

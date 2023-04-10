@@ -13,7 +13,7 @@ import kotlin.jvm.internal.Intrinsics;
 /* loaded from: google-assistant-plugin-2.5.1.zip:google-assistant-plugin/lib/app-actions-test-tool-kotlin-2.5.1.jar:com/google/assistant/plugin/shortcuts/ui/AppActionsHyperLink.class */
 public final class AppActionsHyperLink extends JButton {
     public AppActionsHyperLink() {
-        Color linkColor = JBUI.CurrentTheme.Link.linkColor();
+        Color linkColor = JBUI.CurrentTheme.Link.Foreground.ENABLED;
         Intrinsics.checkNotNullExpressionValue(linkColor, "JBUI.CurrentTheme.Link.linkColor()");
         String hexString = Integer.toHexString(linkColor.getRGB());
         Intrinsics.checkNotNullExpressionValue(hexString, "Integer.toHexString(JBUI…eme.Link.linkColor().rgb)");

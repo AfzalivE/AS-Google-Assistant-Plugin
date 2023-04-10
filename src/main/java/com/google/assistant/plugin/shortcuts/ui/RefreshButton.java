@@ -13,7 +13,7 @@ import kotlin.Metadata;
 /* loaded from: google-assistant-plugin-2.5.1.zip:google-assistant-plugin/lib/app-actions-test-tool-kotlin-2.5.1.jar:com/google/assistant/plugin/shortcuts/ui/RefreshButton.class */
 public final class RefreshButton extends JButton {
     public RefreshButton() {
-        setIcon(IconLoader.findIcon(ConstantsKt.REFRESH_ICON));
+        setIcon(IconLoader.findIcon(ConstantsKt.REFRESH_ICON, ConstantsKt.class));
         setContentAreaFilled(false);
         setBorder(BorderFactory.createEmptyBorder());
         Dimension dimension = new Dimension(24, 24);

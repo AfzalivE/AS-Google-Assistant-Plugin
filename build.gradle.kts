@@ -21,7 +21,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.8.0"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.13.2"
+    id("org.jetbrains.intellij") version "1.13.3"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // Gradle Qodana Plugin
@@ -131,10 +131,11 @@ tasks {
 dependencies {
     // Needed for ComponentName, Uri, and Intent usage in the plugin. Pre-loaded in AS.
     compileOnly(fileTree(properties("androidJarDir")) { include("android.jar") })
+
     implementation(kotlin("stdlib"))
     
     // GCT classes will already be loaded in AS, but we need them to compile the plugin.
-    compileOnly(fileTree("${properties("ideDir")}/plugins/google-login-as/lib") { include("*.jar") })
+    compileOnly(fileTree("${properties("ideDir")}/plugins/android/lib") { include("*.jar") })
     implementation("com.google.protobuf:protobuf-java:3.21.12")
     implementation("com.google.protobuf:protobuf-java-util:3.21.12") {
         // Guava is already loaded in AS so this avoids a classloading error.

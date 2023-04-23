@@ -22,8 +22,6 @@
     </extensions>
 
     <applicationListeners>
-<!--        <listener class="com.github.afzalive.firstintellijplugin.listeners.MyProjectManagerListener"-->
-<!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
         <listener class="com.google.assistant.plugin.appactions.extensions.AppEventListener" 
                   topic="com.intellij.ide.AppLifecycleListener" />
     </applicationListeners>

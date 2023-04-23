@@ -14,7 +14,7 @@ class AppActionsToolWindowFactory() : ToolWindowFactory {
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val contentFactory = ContentFactory.SERVICE.getInstance()
+        val contentFactory = ContentFactory.getInstance()
         val content = contentFactory.createContent(appActionsToolWindowPanel, "", false)
         toolWindow.contentManager.removeAllContents(true)
         toolWindow.contentManager.addContent(content)

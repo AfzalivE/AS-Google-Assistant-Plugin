@@ -12,11 +12,9 @@ import kotlin.jvm.internal.Intrinsics
 /* loaded from: google-assistant-plugin-2.5.1.zip:google-assistant-plugin/lib/app-actions-test-tool-kotlin-2.5.1.jar:com/google/assistant/plugin/common/utils/PluginUtils.class */
 class PluginUtils private constructor() {
     private val pluginVersion: String
-        private get() {
+        get() {
             val descriptor = PluginManagerCore.getPlugin(
-                PluginManager.getPluginByClassName(
-                    PluginUtils::class.java.name
-                )
+                PluginManager.getPluginByClass(PluginUtils::class.java)?.pluginId
             )
             if (descriptor != null) {
                 val version = descriptor.version

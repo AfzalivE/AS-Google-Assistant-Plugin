@@ -49,7 +49,7 @@ class PluginStartupExtension : StartupActivity, DumbAware {
             true,
             true,
             AppActionsToolWindowFactory(appActionsPanel),
-            IconLoader.findIcon("/appactions/assistant_13dp.svg"),
+            IconLoader.findIcon("/appactions/assistant_13dp.svg", PluginStartupExtension::class.java),
             supplier
         )
         ApplicationManager.getApplication().invokeLater {
